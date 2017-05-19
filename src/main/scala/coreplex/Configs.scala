@@ -228,3 +228,6 @@ class WithRationalRocketTiles extends Config((site, here, up) => {
   case RocketCrossing => RationalCrossing()
 })
 
+class WithRVFIMonitors extends Config((site, here, up) => {
+  case BuildCore => (p: Parameters) => new RocketWithRVFI()(p)
+})
