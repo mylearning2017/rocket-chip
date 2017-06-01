@@ -769,7 +769,9 @@ class RVFIMonitor(implicit p: Parameters) extends BlackBox {
     val rvfi_valid = UInt(INPUT, width=nret)
     val rvfi_order = UInt(INPUT, width=8*nret)
     val rvfi_insn = UInt(INPUT, width=32*nret)
+    val rvfi_intr = UInt(INPUT, width=nret)
     val rvfi_trap = UInt(INPUT, width=nret)
+    val rvfi_halt = UInt(INPUT, width=nret)
     val rvfi_rs1_addr = UInt(INPUT, width=5*nret)
     val rvfi_rs2_addr = UInt(INPUT, width=5*nret)
     val rvfi_rs1_rdata = UInt(INPUT, width=nret*xlen)
@@ -783,6 +785,7 @@ class RVFIMonitor(implicit p: Parameters) extends BlackBox {
     val rvfi_mem_wmask = UInt(INPUT, width=nret*xlen/8)
     val rvfi_mem_rdata = UInt(INPUT, width=nret*xlen)
     val rvfi_mem_wdata = UInt(INPUT, width=nret*xlen)
+    val errcode = UInt(OUTPUT, width=16)
   })
 }
 
@@ -794,17 +797,20 @@ class RocketWithRVFI(implicit p: Parameters) extends Rocket()(p) {
   rvfi_mon.io.rvfi_valid := wb_valid
   rvfi_mon.io.rvfi_order := UInt(0)
   rvfi_mon.io.rvfi_insn := wb_reg_inst
-  rvfi_mon.io.rvfi_trap := UInt(0)
+  rvfi_mon.io.rvfi_intr := Reg(next=Reg(next=Reg(next=(csr.io.interrupt))))
+  rvfi_mon.io.rvfi_trap := Reg(next=Reg(next=Reg(next=(id_illegal_insn))))
+  rvfi_mon.io.rvfi_halt := UInt(0)
   rvfi_mon.io.rvfi_rs1_addr := wb_reg_inst(19,15)
   rvfi_mon.io.rvfi_rs2_addr := wb_reg_inst(24,20)
   rvfi_mon.io.rvfi_rs1_rdata := Reg(next=Reg(next=ex_rs(0)))
   rvfi_mon.io.rvfi_rs2_rdata := Reg(next=Reg(next=ex_rs(1)))
   rvfi_mon.io.rvfi_rd_addr := Mux(rf_wen, rf_waddr, UInt(0))
-  rvfi_mon.io.rvfi_rd_wdata := Mux(rf_wen, rf_wdata, UInt(0))
+  rvfi_mon.io.rvfi_rd_wdata := Mux(rf_wen && rf_waddr=/=UInt(0), rf_wdata, UInt(0))
   rvfi_mon.io.rvfi_pc_rdata := wb_reg_pc
-  rvfi_mon.io.rvfi_pc_wdata := UInt(0) // TODO HERE
-  rvfi_mon.io.rvfi_mem_rmask := UInt(0) // TODO HERE
-  rvfi_mon.io.rvfi_mem_wmask := UInt(0) // TODO HERE
-  rvfi_mon.io.rvfi_mem_rdata := UInt(0) // TODO HERE
-  rvfi_mon.io.rvfi_mem_wdata := UInt(0) // TODO HERE
+  rvfi_mon.io.rvfi_pc_wdata := Reg(next=io.imem.req.bits.pc)
+  rvfi_mon.io.rvfi_mem_addr := Reg(next=Reg(next=io.dmem.req.bits.addr))
+  rvfi_mon.io.rvfi_mem_rmask := Fill(p(XLen)/8, Reg(next=Reg(next=io.dmem.req.valid)) && !Reg(next=io.dmem.s1_kill) && !io.dmem.s2_nack && Reg(next=Reg(next=MemoryOpConstants.isRead(io.dmem.req.bits.cmd)))) & Reg(next=io.dmem.s1_data.mask)
+  rvfi_mon.io.rvfi_mem_wmask := Fill(p(XLen)/8, Reg(next=Reg(next=io.dmem.req.valid)) && !Reg(next=io.dmem.s1_kill) && !io.dmem.s2_nack && Reg(next=Reg(next=MemoryOpConstants.isWrite(io.dmem.req.bits.cmd))))  // TODO Partial store bits (M_PWR)
+  rvfi_mon.io.rvfi_mem_rdata := Reg(next=io.dmem.s1_data.data)
+  rvfi_mon.io.rvfi_mem_wdata := Reg(next=Reg(next=io.dmem.req.bits.data))
 }
