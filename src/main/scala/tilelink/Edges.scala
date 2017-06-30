@@ -20,7 +20,7 @@ class TLEdge(
   }
 
   def mask(address: UInt, lgSize: UInt): UInt =
-    maskGen(address, lgSize, manager.beatBytes)
+    MaskGen(address, lgSize, manager.beatBytes)
 
   def staticHasData(bundle: TLChannel): Option[Boolean] = {
     bundle match {

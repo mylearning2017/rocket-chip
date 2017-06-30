@@ -399,7 +399,7 @@ class Rocket(implicit p: Parameters) extends CoreModule()(p)
     mem_reg_wdata := alu.io.out
     when (ex_ctrl.rxs2 && (ex_ctrl.mem || ex_ctrl.rocc || ex_sfence)) {
       val typ = Mux(ex_ctrl.rocc, log2Ceil(xLen/8).U, ex_ctrl.mem_type)
-      mem_reg_rs2 := new uncore.util.StoreGen(typ, 0.U, ex_rs(1), coreDataBytes).data
+      mem_reg_rs2 := new StoreGen(typ, 0.U, ex_rs(1), coreDataBytes).data
     }
   }
 

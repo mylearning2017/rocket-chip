@@ -6,6 +6,7 @@ import Chisel._
 
 import freechips.rocketchip.config._
 import freechips.rocketchip.coreplex._
+import freechips.rocketchip.devices.tilelink._
 import freechips.rocketchip.diplomacy._
 import freechips.rocketchip.tilelink._
 import freechips.rocketchip.amba.axi4._
@@ -44,7 +45,7 @@ trait HasPeripheryParameters {
   def socBusBytes = socBusConfig.beatBytes
   def cacheBlockBytes = p(CacheBlockBytes)
   def peripheryBusArithmetic = p(PeripheryBusArithmetic)
-  def nMemoryChannels = p(coreplex.BankedL2Config).nMemoryChannels
+  def nMemoryChannels = p(BankedL2Config).nMemoryChannels
   def nExtInterrupts = p(NExtTopInterrupts)
 }
 

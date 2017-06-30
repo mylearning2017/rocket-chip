@@ -5,9 +5,10 @@ package freechips.rocketchip.groundtest
 import Chisel._
 
 import freechips.rocketchip.config.{Field, Parameters}
-import freechips.rocketchip.diplomacy.LazyModule
+import freechips.rocketchip.diplomacy._
 import freechips.rocketchip.coreplex._
 import freechips.rocketchip.tilelink._
+import freechips.rocketchip.tile._
 import freechips.rocketchip.util._
 
 import scala.math.max
@@ -18,8 +19,6 @@ class GroundTestCoreplex(implicit p: Parameters) extends BaseCoreplex {
   val tiles = List.tabulate(p(NTiles)) { i =>
     LazyModule(new GroundTestTile()(p.alter { (site, here, up) => {
       case TileId => i
-      case CacheBlockOffsetBits => log2Up(site(CacheBlockBytes))
-      case AmoAluOperandBits => site(XLen)
       case SharedMemoryTLEdge => tile_splitter.node.edgesIn(0)
     }}))
   }

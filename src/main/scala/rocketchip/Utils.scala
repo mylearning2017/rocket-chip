@@ -2,8 +2,12 @@
 
 package freechips.rocketchip.chip
 
+import freechips.rocketchip.config.Parameters
+import freechips.rocketchip.diplomacy.DTB
+import freechips.rocketchip.coreplex.BootROMFile
 import java.nio.file.{Files, Paths}
 import java.nio.{ByteBuffer, ByteOrder}
+import scala.collection.mutable.ArrayBuffer
 
 class RangeManager {
   private var finalized = false
@@ -30,7 +34,7 @@ class RangeManager {
 
 class ResourceManager[T] {
   private var finalized = false
-  private val l = collection.mutable.ArrayBuffer[T]()
+  private val l = ArrayBuffer[T]()
   def add(element: T) = { require(!finalized); l += element }
   def add(list: Seq[T]) = { require(!finalized); l ++= list }
   def get: Seq[T] = { finalized = true; l }

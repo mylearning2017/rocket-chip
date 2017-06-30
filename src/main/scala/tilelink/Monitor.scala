@@ -6,6 +6,7 @@ import Chisel._
 import chisel3.internal.sourceinfo.{SourceInfo, SourceLine}
 import freechips.rocketchip.config.Parameters
 import freechips.rocketchip.diplomacy._
+import freechips.rocketchip.util.{HeterogeneousBag, PlusArg}
 
 case class TLMonitorArgs(edge: () => Seq[TLEdge], sourceInfo: SourceInfo, p: Parameters)
 
@@ -16,7 +17,7 @@ abstract class TLMonitorBase(args: TLMonitorArgs) extends MonitorBase()(args.sou
   lazy val module = new LazyModuleImp(this) {
     val edges = args.edge()
     val io = new Bundle {
-      val in = util.HeterogeneousBag(edges.map(p => new TLBundleSnoop(p.bundle))).flip
+      val in = HeterogeneousBag(edges.map(p => new TLBundleSnoop(p.bundle))).flip
     }
 
     (edges zip io.in).foreach { case (e, in) => legalize(in, e, reset) }
@@ -435,7 +436,7 @@ class TLMonitor(args: TLMonitorArgs) extends TLMonitorBase(args)
     inflight := (inflight | a_set) & ~d_clr
 
     val watchdog = RegInit(UInt(0, width = 32))
-    val limit = util.PlusArg("tilelink_timeout")
+    val limit = PlusArg("tilelink_timeout")
     assert (!inflight.orR || limit === UInt(0) || watchdog < limit, "TileLink timeout expired" + extra)
 
     watchdog := watchdog + UInt(1)

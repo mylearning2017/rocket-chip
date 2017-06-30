@@ -6,7 +6,7 @@ import Chisel._
 import chisel3.internal.sourceinfo.SourceInfo
 import freechips.rocketchip.config.Parameters
 import freechips.rocketchip.diplomacy._
-import freechips.rocketchip.util.GenericParameterizedBundle
+import freechips.rocketchip.util._
 import scala.math.{min,max}
 
 // Ensures that all downstream RW managers support Atomic operationss.

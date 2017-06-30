@@ -3,6 +3,7 @@
 package freechips.rocketchip.rocket.constants
 
 import Chisel._
+import freechips.rocketchip.util._
 import scala.math._
 
 trait ScalarOpConstants {

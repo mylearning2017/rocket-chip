@@ -7,6 +7,7 @@ import Chisel._
 import freechips.rocketchip.amba.axi4._
 import freechips.rocketchip.config.Parameters
 import freechips.rocketchip.coreplex._
+import freechips.rocketchip.devices.debug._
 import freechips.rocketchip.diplomacy._
 import freechips.rocketchip.jtag.JTAGIO
 
@@ -52,11 +53,11 @@ class SimDTM(implicit p: Parameters) extends BlackBox {
   val io = new Bundle {
     val clk = Clock(INPUT)
     val reset = Bool(INPUT)
-    val debug = new uncore.devices.DMIIO
+    val debug = new DMIIO
     val exit = UInt(OUTPUT, 32)
   }
 
-  def connect(tbclk: Clock, tbreset: Bool, dutio: uncore.devices.ClockedDMIIO, tbsuccess: Bool) = {
+  def connect(tbclk: Clock, tbreset: Bool, dutio: ClockedDMIIO, tbsuccess: Bool) = {
     io.clk := tbclk
     io.reset := tbreset
     dutio.dmi <> io.debug

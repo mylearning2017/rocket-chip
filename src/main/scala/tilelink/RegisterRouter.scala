@@ -6,6 +6,7 @@ import Chisel._
 import freechips.rocketchip.config.Parameters
 import freechips.rocketchip.diplomacy._
 import freechips.rocketchip.regmapper._
+import freechips.rocketchip.util.HeterogeneousBag
 import scala.math.{min,max}
 
 class TLRegisterNode(
@@ -107,7 +108,7 @@ abstract class TLRegisterRouterBase(devname: String, devcompat: Seq[String], val
   val intnode = IntSourceNode(IntSourcePortSimple(num = interrupts, resources = Seq(Resource(device, "int"))))
 }
 
-case class TLRegBundleArg(interrupts: util.HeterogeneousBag[Vec[Bool]], in: util.HeterogeneousBag[TLBundle])(implicit val p: Parameters)
+case class TLRegBundleArg(interrupts: HeterogeneousBag[Vec[Bool]], in: HeterogeneousBag[TLBundle])(implicit val p: Parameters)
 
 class TLRegBundleBase(arg: TLRegBundleArg) extends Bundle
 {

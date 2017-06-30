@@ -5,7 +5,8 @@ package freechips.rocketchip.rocket
 import Chisel._
 import Chisel.ImplicitConversions._
 import freechips.rocketchip.config.Parameters
-import freechips.rocketchip.coreplex.{RocketCrossing, RationalCrossing}
+import freechips.rocketchip.coreplex.{RationalCrossing, RocketCrossing, RocketTilesKey}
+import freechips.rocketchip.diplomacy.AddressSet
 import freechips.rocketchip.tilelink._
 import freechips.rocketchip.util._
 import TLMessages._
@@ -150,7 +151,7 @@ class DCacheModule(outer: DCache) extends HellaCacheModule(outer) {
     if (usingDataScratchpad) {
       metaWriteArb.io.out.ready := true
       metaReadArb.io.out.ready := !metaWriteArb.io.out.valid
-      val baseAddr = GetPropertyByHartId(p(coreplex.RocketTilesKey), _.dcache.flatMap(_.scratch.map(_.U)), io.hartid)
+      val baseAddr = GetPropertyByHartId(p(RocketTilesKey), _.dcache.flatMap(_.scratch.map(_.U)), io.hartid)
       val inScratchpad = s1_paddr >= baseAddr && s1_paddr < baseAddr + nSets * cacheBlockBytes
       val hitState = Mux(inScratchpad, ClientMetadata.maximum, ClientMetadata.onReset)
       (inScratchpad, hitState, L1Metadata(UInt(0), ClientMetadata.onReset))

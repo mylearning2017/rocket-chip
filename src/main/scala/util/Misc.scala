@@ -208,27 +208,29 @@ object PopCountAtLeast {
 // eg: (0x3, 0, 4) => 0001, (0x3, 1, 4) => 0011, (0x3, 2, 4) => 1111
 // groupBy applies an interleaved OR reduction; groupBy=2 take 0010 => 01
 object MaskGen {
-  private def helper(i: Int): Seq[(Bool, Bool)] = {
-    if (i == 0) {
-      Seq((lgSize >= UInt(lgBytes), Bool(true)))
-    } else {
-      val sub = helper(i-1)
-      val size = sizeOH(lgBytes - i)
-      val bit = addr_lo(lgBytes - i)
-      val nbit = !bit
-      Seq.tabulate (1 << i) { j =>
-        val (sub_acc, sub_eq) = sub(j/2)
-        val eq = sub_eq && (if (j % 2 == 1) bit else nbit)
-        val acc = sub_acc || (size && eq)
-        (acc, eq)
-      }
-    }
-  }
   def apply(addr_lo: UInt, lgSize: UInt, beatBytes: Int, groupBy: Int = 1): UInt = {
     require (groupBy >= 1 && beatBytes >= groupBy)
     require (isPow2(beatBytes) && isPow2(groupBy))
     val lgBytes = log2Ceil(beatBytes)
     val sizeOH = UIntToOH(lgSize, log2Up(beatBytes)) | UInt(groupBy*2 - 1)
+
+    def helper(i: Int): Seq[(Bool, Bool)] = {
+      if (i == 0) {
+        Seq((lgSize >= UInt(lgBytes), Bool(true)))
+      } else {
+        val sub = helper(i-1)
+        val size = sizeOH(lgBytes - i)
+        val bit = addr_lo(lgBytes - i)
+        val nbit = !bit
+        Seq.tabulate (1 << i) { j =>
+          val (sub_acc, sub_eq) = sub(j/2)
+          val eq = sub_eq && (if (j % 2 == 1) bit else nbit)
+          val acc = sub_acc || (size && eq)
+          (acc, eq)
+        }
+      }
+    }
+
     if (groupBy == beatBytes) UInt(1) else
       Cat(helper(lgBytes-log2Ceil(groupBy)).map(_._1).reverse)
   }

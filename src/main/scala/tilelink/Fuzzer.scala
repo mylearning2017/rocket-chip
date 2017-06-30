@@ -5,7 +5,7 @@ package freechips.rocketchip.tilelink
 import Chisel._
 import freechips.rocketchip.config.Parameters
 import freechips.rocketchip.diplomacy._
-import freechips.rocketchip.util.UIntToOH1
+import freechips.rocketchip.util._
 
 class IDMapGenerator(numIds: Int) extends Module {
   val w = log2Up(numIds)
@@ -237,7 +237,7 @@ class TLFuzzRAM(txns: Int)(implicit p: Parameters) extends LazyModule
     io.finished := fuzz.module.io.finished
 
     // Shove the RAM into another clock domain
-    val clocks = Module(new util.Pow2ClockDivider(2))
+    val clocks = Module(new Pow2ClockDivider(2))
     ram.module.clock := clocks.io.clock_out
 
     // ... and safely cross TL2 into it

@@ -9,7 +9,7 @@ object DecodeLogic
 {
   def term(lit: BitPat) =
     new Term(lit.value, BigInt(2).pow(lit.getWidth)-(lit.mask+1))
-  def logic(addr: UInt, addrWidth: Int, cache: scala.Map[Term,Bool], terms: Seq[Term]) = {
+  def logic(addr: UInt, addrWidth: Int, cache: Map[Term,Bool], terms: Seq[Term]) = {
     terms.map { t =>
       cache.getOrElseUpdate(t, (if (t.mask == 0) addr else addr & Bits(BigInt(2).pow(addrWidth)-(t.mask+1), addrWidth)) === Bits(t.value, addrWidth))
     }.foldLeft(Bool(false))(_||_)

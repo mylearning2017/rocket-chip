@@ -5,11 +5,12 @@ package freechips.rocketchip.chip
 import Chisel._
 
 import freechips.rocketchip.config._
+import freechips.rocketchip.devices.debug._
+import freechips.rocketchip.devices.tilelink._
 import freechips.rocketchip.coreplex._
 import freechips.rocketchip.diplomacy._
 import freechips.rocketchip.jtag.JTAGIO
 import freechips.rocketchip.tilelink._
-import freechips.rocketchip.devices._
 import freechips.rocketchip.util._
 
 /** All the traits defined in this file assume that they are being mixed in
@@ -90,7 +91,7 @@ trait HasPeripheryRTCCounter extends HasSystemNetworks with HasCoreplexRISCVPlat
 
 trait HasPeripheryRTCCounterModuleImp extends LazyMultiIOModuleImp {
   val outer: HasPeripheryRTCCounter
-  val period = p(rocketchip.RTCPeriod)
+  val period = p(RTCPeriod)
   val rtcCounter = RegInit(UInt(0, width = log2Up(period)))
   val rtcWrap = rtcCounter === UInt(period-1)
 

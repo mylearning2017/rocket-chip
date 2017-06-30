@@ -250,7 +250,7 @@ class RationalRocketTile(rtp: RocketTileParams, hartid: Int)(implicit p: Paramet
   masterNode :=* source.node
 
   val slaveNode = new TLRationalInputNode() { override def reverse = true }
-  val sink = LazyModule(new TLRationalCrossingSink(util.SlowToFast))
+  val sink = LazyModule(new TLRationalCrossingSink(SlowToFast))
   rocket.slaveNode :*= sink.node
   sink.node :*= slaveNode
 

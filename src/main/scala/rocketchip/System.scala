@@ -5,7 +5,8 @@ package freechips.rocketchip.chip
 import Chisel._
 
 import freechips.rocketchip.config.Parameters
-import freechips.rocketchip.diplomacy._
+import freechips.rocketchip.diplomacy.{LazyModule, LazyMultiIOModuleImp}
+import freechips.rocketchip.util.ElaborationArtefacts
 
 /** BareSystem is the root class for creating a top-level RTL module */
 abstract class BareSystem(implicit p: Parameters) extends LazyModule {

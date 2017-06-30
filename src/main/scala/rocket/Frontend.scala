@@ -10,7 +10,7 @@ import freechips.rocketchip.config._
 import freechips.rocketchip.coreplex._
 import freechips.rocketchip.diplomacy.{LazyModule, LazyModuleImp}
 import freechips.rocketchip.tilelink._
-import freechips.rocketchip.tile.{CoreBundle, CoreModule}
+import freechips.rocketchip.tile._
 import freechips.rocketchip.util._
 
 class FrontendReq(implicit p: Parameters) extends CoreBundle()(p) {

@@ -42,7 +42,7 @@ trait HasGroundTestParameters {
   val nCached = tileParams.cached
   val nPTW = tileParams.ptw
   val memStart = p(ExtMem).base
-  val memStartBlock = memStart >> p(CacheBlockOffsetBits)
+  val memStartBlock = memStart >> log2Up(p(CacheBlockBytes))
 }
 
 class GroundTestStatus extends Bundle with HasGroundTestConstants {

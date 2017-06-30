@@ -4,10 +4,10 @@ package freechips.rocketchip.tilelink
 
 import Chisel._
 import chisel3.internal.sourceinfo.SourceInfo
+import freechips.rocketchip.amba.ahb._
 import freechips.rocketchip.config.Parameters
 import freechips.rocketchip.diplomacy._
-import freechips.rocketchip.amba.ahb._
-import freechips.rocketchip.UIntToOH1
+import freechips.rocketchip.util._
 import scala.math.{min, max}
 import AHBParameters._
 
@@ -31,7 +31,7 @@ case class TLToAHBNode() extends MixedAdapterNode(TLImp, AHBImp)(
     TLManagerPortParameters(managers, beatBytes, 1, 1)
   })
 
-class AHBControlBundle(params: TLEdge) extends util.GenericParameterizedBundle(params)
+class AHBControlBundle(params: TLEdge) extends GenericParameterizedBundle(params)
 {
   val full   = Bool()
   val send   = Bool() // => full+data

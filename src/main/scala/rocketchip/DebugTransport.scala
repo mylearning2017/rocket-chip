@@ -5,7 +5,7 @@ package freechips.rocketchip.chip
 import Chisel._
 
 import freechips.rocketchip.config._
-import freechips.rocketchip.devices.{DMIConsts, DMIIO, DMIReq, DMIResp}
+import freechips.rocketchip.devices.debug.{DMIConsts, DMIIO, DMIReq, DMIResp}
 import freechips.rocketchip.jtag._
 import freechips.rocketchip.util._
 

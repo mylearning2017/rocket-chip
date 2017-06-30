@@ -151,7 +151,7 @@ class TLRAMAsyncCrossing(txns: Int)(implicit p: Parameters) extends LazyModule {
     io.finished := fuzz.module.io.finished
 
     // Shove the RAM into another clock domain
-    val clocks = Module(new util.Pow2ClockDivider(2))
+    val clocks = Module(new Pow2ClockDivider(2))
     ram.module.clock := clocks.io.clock_out
 
     // ... and safely cross TL2 into it
