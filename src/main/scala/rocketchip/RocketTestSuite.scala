@@ -1,9 +1,8 @@
 // See LICENSE.Berkeley for license details.
 // See LICENSE.SiFive for license details.
 
-package rocketchip
+package freechips.rocketchip.chip
 
-import Chisel._
 import scala.collection.mutable.LinkedHashSet
 
 abstract class RocketTestSuite {

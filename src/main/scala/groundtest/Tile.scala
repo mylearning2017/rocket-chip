@@ -1,19 +1,17 @@
 // See LICENSE.SiFive for license details.
 // See LICENSE.Berkeley for license details.
 
-package groundtest
+package freechips.rocketchip.groundtest
 
 import Chisel._
-import config._
-import coreplex._
-import rocket._
-import tile._
-import uncore.tilelink._
-import uncore.tilelink2._
-import rocketchip.ExtMem
-import diplomacy._
-import util.ParameterizedBundle
-
+import freechips.rocketchip.config._
+import freechips.rocketchip.coreplex._
+import freechips.rocketchip.diplomacy._
+import freechips.rocketchip.rocket._
+import freechips.rocketchip.chip._
+import freechips.rocketchip.tile._
+import freechips.rocketchip.tilelink._
+import freechips.rocketchip.util.ParameterizedBundle
 import scala.collection.mutable.ListBuffer
 
 case object BuildGroundTest extends Field[Parameters => GroundTest]
@@ -26,7 +24,7 @@ case class GroundTestTileParams(
   val icache = None
   val btb = None
   val rocc = Nil
-  val core = rocket.RocketCoreParams(nPMPs = 0) //TODO remove this
+  val core = RocketCoreParams(nPMPs = 0) //TODO remove this
   val cached = if(dcache.isDefined) 1 else 0
   val dataScratchpadBytes = 0
 }

@@ -1,24 +1,24 @@
 // See LICENSE.SiFive for license details.
 // See LICENSE.Berkeley for license details.
 
-package rocketchip
+package freechips.rocketchip.chip
 
 import Chisel._
-import junctions._
-import rocket._
-import diplomacy._
-import uncore.agents._
-import uncore.tilelink2._
-import uncore.devices._
-import uncore.converters._
-import util._
-import coreplex._
+
+import freechips.rocketchip.config._
+import freechips.rocketchip.coreplex._
+import freechips.rocketchip.devices._
+import freechips.rocketchip.diplomacy._
+import freechips.rocketchip.rocket._
+import freechips.rocketchip.tile.XLen
+import freechips.rocketchip.tilelink._
+import freechips.rocketchip.util._
+
 import scala.math.max
 import scala.collection.mutable.{LinkedHashSet, ListBuffer}
 import scala.collection.immutable.HashMap
+
 import DefaultTestSuites._
-import config._
-import tile.XLen
 
 class BasePlatformConfig extends Config((site, here, up) => {
   // DTS descriptive parameters

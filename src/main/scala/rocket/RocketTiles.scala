@@ -1,16 +1,16 @@
 // See LICENSE.SiFive for license details.
 // See LICENSE.Berkeley for license details.
 
-package rocket
+package freechips.rocketchip.rocket
 
 import Chisel._
-import config._
-import coreplex._
-import diplomacy._
-import tile._
-import uncore.devices._
-import uncore.tilelink2._
-import util._
+
+import freechips.rocketchip.config._
+import freechips.rocketchip.coreplex._
+import freechips.rocketchip.diplomacy._
+import freechips.rocketchip.tile._
+import freechips.rocketchip.tilelink._
+import freechips.rocketchip.util._
 
 case class RocketTileParams(
     core: RocketCoreParams = RocketCoreParams(),

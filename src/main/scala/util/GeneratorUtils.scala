@@ -1,11 +1,11 @@
 // See LICENSE.SiFive for license details.
 
-package util
+package freechips.rocketchip.util
 
 import Chisel._
 import chisel3.experimental.{RawModule}
-import config._
-import diplomacy.LazyModule
+import freechips.rocketchip.config.Parameters
+import freechips.rocketchip.diplomacy.LazyModule
 import java.io.{File, FileWriter}
 
 /** Representation of the information this Generator needs to collect from external sources. */

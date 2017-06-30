@@ -1,15 +1,6 @@
 // See LICENSE.SiFive for license details.
 
-package rocketchip
-
-import config._
-import junctions._
-import diplomacy._
-import uncore.devices._
-import tile.XLen
-import coreplex._
-import uncore.tilelink2._
-import util._
+package freechips.rocketchip.chip
 
 import java.nio.file.{Files, Paths}
 import java.nio.{ByteBuffer, ByteOrder}

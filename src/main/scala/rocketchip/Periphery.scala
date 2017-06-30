@@ -1,14 +1,16 @@
 // See LICENSE.SiFive for license details.
 
-package rocketchip
+package freechips.rocketchip.chip
 
 import Chisel._
-import config._
-import coreplex._
-import diplomacy._
-import uncore.tilelink2._
-import uncore.axi4._
-import util._
+
+import freechips.rocketchip.config._
+import freechips.rocketchip.coreplex._
+import freechips.rocketchip.diplomacy._
+import freechips.rocketchip.tilelink._
+import freechips.rocketchip.amba.axi4._
+import freechips.rocketchip.util._
+
 import scala.math.{min,max}
 
 /** Specifies the size of external memory */

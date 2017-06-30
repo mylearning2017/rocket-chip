@@ -1,10 +1,10 @@
 // See LICENSE.SiFive for license details.
 
-package unittest
+package freechips.rocketchip.unittest
 
 import Chisel._
-import config._
-import rocketchip.{BaseConfig, BasePlatformConfig}
+import freechips.rocketchip.config._
+import freechips.rocketchip.chip.{BaseConfig, BasePlatformConfig}
 
 case object TestDurationMultiplier extends Field[Int]
 

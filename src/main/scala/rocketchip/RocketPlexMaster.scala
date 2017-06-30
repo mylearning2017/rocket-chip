@@ -1,10 +1,11 @@
 // See LICENSE.SiFive for license details.
 
-package rocketchip
+package freechips.rocketchip.chip
 
 import Chisel._
-import coreplex.RocketPlex
-import diplomacy.{LazyModule, LazyMultiIOModuleImp}
+
+import freechips.rocketchip.coreplex.RocketPlex
+import freechips.rocketchip.diplomacy.{LazyModule, LazyMultiIOModuleImp}
 
 /** Add a RocketPlex to the system */
 trait HasRocketPlexMaster extends HasSystemNetworks with HasCoreplexRISCVPlatform {

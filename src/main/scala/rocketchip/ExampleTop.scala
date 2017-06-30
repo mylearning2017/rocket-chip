@@ -1,11 +1,10 @@
 // See LICENSE.SiFive for license details.
 
-package rocketchip
+package freechips.rocketchip.chip
 
 import Chisel._
-import config._
-import junctions._
-import rocketchip._
+
+import freechips.rocketchip.config.Parameters
 
 /** Example system with periphery devices (w/o coreplex) */
 abstract class ExampleSystem(implicit p: Parameters) extends BaseSystem

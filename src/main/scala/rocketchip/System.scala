@@ -1,11 +1,11 @@
 // See LICENSE.SiFive for license details.
 
-package rocketchip
+package freechips.rocketchip.chip
 
 import Chisel._
-import config.Parameters
-import diplomacy._
-import util._
+
+import freechips.rocketchip.config.Parameters
+import freechips.rocketchip.diplomacy._
 
 /** BareSystem is the root class for creating a top-level RTL module */
 abstract class BareSystem(implicit p: Parameters) extends LazyModule {

@@ -1,14 +1,16 @@
 // See LICENSE.SiFive for license details.
 
-package coreplex
+package freechips.rocketchip.coreplex
 
 import Chisel._
-import config.Field
-import diplomacy._
-import tile._
-import uncore.tilelink2._
-import uncore.devices._
-import util._
+
+import freechips.rocketchip.config.Field
+import freechips.rocketchip.devices.debug._
+import freechips.rocketchip.devices.tilelink._
+import freechips.rocketchip.diplomacy._
+import freechips.rocketchip.tile._
+import freechips.rocketchip.tilelink._
+import freechips.rocketchip.util._
 
 /** Number of tiles */
 case object NTiles extends Field[Int]

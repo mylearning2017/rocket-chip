@@ -17,17 +17,16 @@
 // Mainstream Systems (REMS) project, funded by EPSRC grant
 // EP/K008528/1.
 
-package groundtest
+package freechips.rocketchip.groundtest
  
 import Chisel._
-import uncore.tilelink._
-import uncore.constants._
-import coreplex.NTiles
-import rocket._
-import tile._
-import util.{Timer, DynamicTimer}
+import freechips.rocketchip.config.{Field, Parameters}
+import freechips.rocketchip.coreplex.NTiles
+import freechips.rocketchip.legacy.tilelink._
+import freechips.rocketchip.rocket._
+import freechips.rocketchip.tile._
+import freechips.rocketchip.util._
 import scala.util.Random
-import config._
 
 // =======
 // Outline

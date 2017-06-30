@@ -1,18 +1,18 @@
 // See LICENSE.SiFive for license details.
 // See LICENSE.Berkeley for license details.
 
-package coreplex
+package freechips.rocketchip.coreplex
 
 import Chisel._
-import config._
-import diplomacy._
-import rocket._
-import tile._
-import uncore.converters._
-import uncore.devices._
-import uncore.tilelink2._
-import uncore.util._
-import util._
+
+import freechips.rocketchip.config._
+import freechips.rocketchip.devices.debug._
+import freechips.rocketchip.devices.tilelink._
+import freechips.rocketchip.diplomacy._
+import freechips.rocketchip.rocket._
+import freechips.rocketchip.tile._
+import freechips.rocketchip.tilelink._
+import freechips.rocketchip.util._
 
 class BaseCoreplexConfig extends Config ((site, here, up) => {
   case PAddrBits => 32

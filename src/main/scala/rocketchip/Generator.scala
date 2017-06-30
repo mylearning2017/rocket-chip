@@ -1,14 +1,15 @@
 // See LICENSE.SiFive for license details.
 
-package rocketchip
+package freechips.rocketchip.chip
 
-import tile.XLen
-import coreplex.RocketTilesKey
+import freechips.rocketchip.coreplex.RocketTilesKey
+import freechips.rocketchip.tile.XLen
+import freechips.rocketchip.util.GeneratorApp
 
 import scala.collection.mutable.LinkedHashSet
 
 /** A Generator for platforms containing Rocket Coreplexes */
-object Generator extends util.GeneratorApp {
+object Generator extends GeneratorApp {
 
   val rv64RegrTestNames = LinkedHashSet(
         "rv64ud-v-fcvt",

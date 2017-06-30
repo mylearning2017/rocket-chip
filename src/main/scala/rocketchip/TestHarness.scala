@@ -1,14 +1,14 @@
 // See LICENSE.SiFive for license details.
 
-package rocketchip
+package freechips.rocketchip.chip
 
 import Chisel._
-import config._
-import junctions._
-import diplomacy._
-import coreplex._
-import uncore.axi4._
-import jtag.JTAGIO
+
+import freechips.rocketchip.amba.axi4._
+import freechips.rocketchip.config.Parameters
+import freechips.rocketchip.coreplex._
+import freechips.rocketchip.diplomacy._
+import freechips.rocketchip.jtag.JTAGIO
 
 class TestHarness()(implicit p: Parameters) extends Module {
   val io = new Bundle {

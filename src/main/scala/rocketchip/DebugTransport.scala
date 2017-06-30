@@ -1,12 +1,13 @@
 // See LICENSE.SiFive for license details.
 
-package rocketchip
+package freechips.rocketchip.chip
 
 import Chisel._
-import util._
-import config._
-import jtag._
-import uncore.devices.{DMIConsts, DMIIO, DMIReq, DMIResp}
+
+import freechips.rocketchip.config._
+import freechips.rocketchip.devices.{DMIConsts, DMIIO, DMIReq, DMIResp}
+import freechips.rocketchip.jtag._
+import freechips.rocketchip.util._
 
 case object IncludeJtagDTM extends Field[Boolean]
 

@@ -1,15 +1,16 @@
 // See LICENSE.SiFive for license details.
 
-package rocketchip
+package freechips.rocketchip.chip
 
 import Chisel._
-import config._
-import coreplex._
-import diplomacy._
-import jtag.JTAGIO
-import uncore.tilelink2._
-import uncore.devices._
-import util._
+
+import freechips.rocketchip.config._
+import freechips.rocketchip.coreplex._
+import freechips.rocketchip.diplomacy._
+import freechips.rocketchip.jtag.JTAGIO
+import freechips.rocketchip.tilelink._
+import freechips.rocketchip.devices._
+import freechips.rocketchip.util._
 
 /** All the traits defined in this file assume that they are being mixed in
   * to a system that has a standard RISCV-based coreplex platform.
