@@ -794,23 +794,67 @@ class RocketWithRVFI(implicit p: Parameters) extends Rocket()(p) {
 
   rvfi_mon.io.clock := clock
   rvfi_mon.io.reset := reset
-  rvfi_mon.io.rvfi_valid := wb_valid
   rvfi_mon.io.rvfi_order := UInt(0)
   rvfi_mon.io.rvfi_insn := wb_reg_inst
   rvfi_mon.io.rvfi_intr := Reg(next=Reg(next=Reg(next=(csr.io.interrupt))))
   rvfi_mon.io.rvfi_trap := Reg(next=Reg(next=Reg(next=(id_illegal_insn))))
   rvfi_mon.io.rvfi_halt := UInt(0)
-  rvfi_mon.io.rvfi_rs1_addr := wb_reg_inst(19,15)
-  rvfi_mon.io.rvfi_rs2_addr := wb_reg_inst(24,20)
-  rvfi_mon.io.rvfi_rs1_rdata := Reg(next=Reg(next=ex_rs(0)))
-  rvfi_mon.io.rvfi_rs2_rdata := Reg(next=Reg(next=ex_rs(1)))
-  rvfi_mon.io.rvfi_rd_addr := Mux(rf_wen, rf_waddr, UInt(0))
-  rvfi_mon.io.rvfi_rd_wdata := Mux(rf_wen && rf_waddr=/=UInt(0), rf_wdata, UInt(0))
-  rvfi_mon.io.rvfi_pc_rdata := wb_reg_pc
   rvfi_mon.io.rvfi_pc_wdata := Reg(next=io.imem.req.bits.pc)
   rvfi_mon.io.rvfi_mem_addr := Reg(next=Reg(next=io.dmem.req.bits.addr))
   rvfi_mon.io.rvfi_mem_rmask := Fill(p(XLen)/8, Reg(next=Reg(next=io.dmem.req.valid)) && !Reg(next=io.dmem.s1_kill) && !io.dmem.s2_nack && Reg(next=Reg(next=MemoryOpConstants.isRead(io.dmem.req.bits.cmd)))) & Reg(next=io.dmem.s1_data.mask)
   rvfi_mon.io.rvfi_mem_wmask := Fill(p(XLen)/8, Reg(next=Reg(next=io.dmem.req.valid)) && !Reg(next=io.dmem.s1_kill) && !io.dmem.s2_nack && Reg(next=Reg(next=MemoryOpConstants.isWrite(io.dmem.req.bits.cmd))))  // TODO Partial store bits (M_PWR)
   rvfi_mon.io.rvfi_mem_rdata := Reg(next=io.dmem.s1_data.data)
   rvfi_mon.io.rvfi_mem_wdata := Reg(next=Reg(next=io.dmem.req.bits.data))
+
+//  val pc = Wire(SInt(width=xLen))
+  val pc = Wire(Bits())
+  pc := wb_reg_pc
+  val inst = wb_reg_inst
+  val rd = RegNext(RegNext(RegNext(id_waddr)))
+  val wfd = wb_ctrl.wfd
+  val wxd = wb_ctrl.wxd
+  val has_data = wb_wen && !wb_set_sboard
+  val priv = csr.io.status.prv
+
+//  rvfi_mon.io.rvfi_valid := wb_valid
+  rvfi_mon.io.rvfi_pc_rdata := wb_reg_pc
+//  rvfi_mon.io.rvfi_rd_addr := Mux(rf_wen, rf_waddr, UInt(0))
+//  rvfi_mon.io.rvfi_rd_wdata := Mux(rf_wen && rf_waddr=/=UInt(0), rf_wdata, UInt(0))
+  rvfi_mon.io.rvfi_rs1_addr := wb_reg_inst(19,15)
+  rvfi_mon.io.rvfi_rs2_addr := wb_reg_inst(24,20)
+  rvfi_mon.io.rvfi_rs1_rdata := Reg(next=Reg(next=ex_rs(0)))
+  rvfi_mon.io.rvfi_rs2_rdata := Reg(next=Reg(next=ex_rs(1)))
+
+  rvfi_mon.io.rvfi_valid := Bool(false)
+  when (wb_valid) {
+    rvfi_mon.io.rvfi_valid := Bool(true)
+    when (wfd) {
+      //printf ("%d 0x%x (0x%x) f%d p%d 0xXXXXXXXXXXXXXXXX\n", priv, pc, inst, rd, rd+UInt(32))
+      rvfi_mon.io.rvfi_rd_addr := rd
+      rvfi_mon.io.rvfi_rd_wdata := rd+UInt(32)
+    }
+    .elsewhen (wxd && rd =/= UInt(0) && has_data) {
+//      printf ("%d 0x%x (0x%x) x%d 0x%x\n", priv, pc, inst, rd, rf_wdata)
+      rvfi_mon.io.rvfi_rd_addr := rd
+      rvfi_mon.io.rvfi_rd_wdata := rf_wdata
+    }
+    .elsewhen (wxd && rd =/= UInt(0) && !has_data) {
+//      printf ("%d 0x%x (0x%x) x%d p%d 0xXXXXXXXXXXXXXXXX\n", priv, pc, inst, rd, rd)
+      rvfi_mon.io.rvfi_rd_addr := rd
+      rvfi_mon.io.rvfi_rd_wdata := UInt(0)
+    }
+    .otherwise {
+//      printf ("%d 0x%x (0x%x)\n", priv, pc, inst)
+      rvfi_mon.io.rvfi_rd_addr := UInt(0)
+      rvfi_mon.io.rvfi_rd_wdata := UInt(0)
+    }
+  }
+
+  when (ll_wen && rf_waddr =/= UInt(0)) {
+//    printf ("x%d p%d 0x%x\n", rf_waddr, rf_waddr, rf_wdata)
+    rvfi_mon.io.rvfi_valid := Bool(true)
+    rvfi_mon.io.rvfi_rd_addr := rf_waddr
+    rvfi_mon.io.rvfi_rd_wdata := rf_wdata
+  }
+
 }
